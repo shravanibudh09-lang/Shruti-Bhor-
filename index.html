@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A tiny celebration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<audio id="bg-song" src="{{ url_for('static', filename='audio/song.mp3') }}" loop preload="auto"></audio>
+<button class="music-toggle" id="music-toggle" aria-label="Play music" aria-pressed="false">
+  <span class="music-toggle__icon">♪</span>
+</button>
+
+<div class="sky" aria-hidden="true">
+  <span class="balloon balloon--1"></span>
+  <span class="balloon balloon--2"></span>
+  <span class="balloon balloon--3"></span>
+  <span class="balloon balloon--4"></span>
+</div>
+
+<main class="stage">
+
+  <!-- 1. Landing -->
+  <section class="screen is-active" id="screen-landing">
+    <p class="eyebrow" id="landing-eyebrow">Someone made you a tiny page.</p>
+    <h1 class="display">There's a little<br>surprise waiting.</h1>
+    <p class="body-text">It only takes a minute — promise.</p>
+    <div class="landing-actions">
+      <button class="btn btn--primary" id="btn-yes">Show me</button>
+      <button class="btn btn--ghost" id="btn-no">Not now</button>
+    </div>
+  </section>
+
+  <!-- 2. Reveal / transition -->
+  <section class="screen" id="screen-reveal">
+    <p class="reveal-text">Alright, dimming the lights…</p>
+    <div class="progress-track" aria-hidden="true">
+      <div class="progress-fill" id="reveal-progress"></div>
+    </div>
+  </section>
+
+  <!-- 3. Celebration -->
+  <section class="screen" id="screen-celebrate">
+    <div class="lights" aria-hidden="true">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <p class="eyebrow">celebration mode</p>
+    <h1 class="display" id="celebrate-heading">Happy Birthday To My Favorite Person ❤️</h1>
+    <p class="body-text" id="celebrate-sub">I made page with  my efforts for see your Face happy on your birthday and too much love.</p>
+    <button class="btn btn--primary" id="btn-to-cake">Cut the cake</button>
+  </section>
+
+  <!-- 4. Cake / wish -->
+  <section class="screen" id="screen-cake">
+    <p class="eyebrow">cake time</p>
+    <h1 class="display">Make a wish</h1>
+    <div class="cake" aria-hidden="true">
+      <div class="cake__flame"></div>
+      <div class="cake__candle"></div>
+      <div class="cake__top"></div>
+      <div class="cake__body"></div>
+    </div>
+    <p class="body-text">Close your eyes for a second — go on, we'll wait.</p>
+    <button class="btn btn--primary" id="btn-wish-made">I made my wish</button>
+  </section>
+
+  <!-- 5. Wishes reveal -->
+  <section class="screen" id="screen-wishes">
+    <p class="eyebrow">for you</p>
+    <h1 class="display">A few wishes,<br>just for you</h1>
+    <p class="body-text">Tap a card to read it.</p>
+
+    <div class="cards" id="cards-wrap"></div>
+
+    <div class="progress-track progress-track--wishes" aria-hidden="true">
+      <div class="progress-fill" id="wishes-progress"></div>
+    </div>
+    <p class="body-text body-text--muted" id="wishes-status">0 of 0 revealed</p>
+  </section>
+
+</main>
+
+<div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

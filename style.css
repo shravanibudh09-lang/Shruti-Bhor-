@@ -1,0 +1,409 @@
+/* ---------------------------------------------------------------------
+   Tokens
+--------------------------------------------------------------------- */
+:root{
+  --blush:        #FFF3EF;
+  --surface:      #FFFFFF;
+  --rose:         #B4425A;
+  --rose-deep:    #8F2E45;
+  --plum-text:    #4A2E38;
+  --plum-muted:   #8A6E76;
+  --peach:        #FFD3B0;
+  --lilac-shadow: rgba(180, 66, 90, 0.16);
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Work Sans", sans-serif;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--blush);
+  color: var(--plum-text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+/* ---------------------------------------------------------------------
+   Ambient balloons
+--------------------------------------------------------------------- */
+.sky{
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.balloon{
+  position: absolute;
+  bottom: -140px;
+  width: 46px;
+  height: 58px;
+  border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+  opacity: 0.35;
+  animation: drift 18s linear infinite;
+}
+.balloon::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: 40px;
+  background: rgba(74,46,56,0.25);
+  transform: translateX(-50%);
+}
+.balloon--1{ left: 8%;  background: var(--rose);  animation-delay: 0s;  animation-duration: 22s; }
+.balloon--2{ left: 78%; background: var(--peach);  animation-delay: 5s;  animation-duration: 26s; }
+.balloon--3{ left: 40%; background: #E3A6B5;       animation-delay: 10s; animation-duration: 20s; }
+.balloon--4{ left: 90%; background: var(--rose-deep); animation-delay: 3s; animation-duration: 30s; }
+
+@keyframes drift{
+  0%   { transform: translateY(0) translateX(0) rotate(0deg); }
+  50%  { transform: translateY(-60vh) translateX(20px) rotate(4deg); }
+  100% { transform: translateY(-130vh) translateX(-10px) rotate(-3deg); }
+}
+
+/* ---------------------------------------------------------------------
+   Stage / screens
+--------------------------------------------------------------------- */
+.stage{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  min-height: 480px;
+  background: var(--surface);
+  border-radius: 28px;
+  box-shadow: 0 24px 60px var(--lilac-shadow);
+  padding: 44px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screen{
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  gap: 6px;
+  animation: rise 0.5s ease;
+}
+.screen.is-active{ display: flex; }
+
+@keyframes rise{
+  from{ opacity: 0; transform: translateY(10px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
+.eyebrow{
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--plum-muted);
+  text-transform: lowercase;
+}
+
+.display{
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 1.15;
+  color: var(--rose-deep);
+}
+
+.body-text{
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--plum-text);
+  max-width: 30ch;
+}
+.body-text--muted{ color: var(--plum-muted); font-size: 13px; margin-top: 12px; margin-bottom: 0; }
+
+/* ---------------------------------------------------------------------
+   Buttons
+--------------------------------------------------------------------- */
+.btn{
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 30px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:active{ transform: scale(0.97); }
+
+.btn--primary{
+  background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+  color: #fff;
+  box-shadow: 0 10px 24px var(--lilac-shadow);
+}
+.btn--primary:hover{ box-shadow: 0 14px 28px var(--lilac-shadow); }
+
+.btn--ghost{
+  background: transparent;
+  color: var(--plum-muted);
+  padding: 10px 16px;
+  font-weight: 500;
+}
+
+.landing-actions{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* the "not now" button gently steps aside a couple of times, then lets you click it */
+#btn-no.is-dodging{ position: relative; }
+
+/* ---------------------------------------------------------------------
+   Reveal screen
+--------------------------------------------------------------------- */
+#screen-reveal{ min-height: 200px; justify-content: center; }
+.reveal-text{
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--plum-muted);
+  margin-bottom: 24px;
+}
+.progress-track{
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--blush);
+  overflow: hidden;
+}
+.progress-fill{
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--peach), var(--rose));
+  transition: width 0.2s linear;
+}
+
+/* ---------------------------------------------------------------------
+   Celebration screen
+--------------------------------------------------------------------- */
+.lights{
+  display: flex;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.lights span{
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--peach);
+  box-shadow: 0 0 10px 2px rgba(255, 211, 176, 0.8);
+}
+.lights span:nth-child(2n){ background: var(--rose); box-shadow: 0 0 10px 2px var(--lilac-shadow); }
+.lights span:nth-child(3n){ background: #E3A6B5; box-shadow: 0 0 10px 2px rgba(227,166,181,0.7); }
+
+/* ---------------------------------------------------------------------
+   Cake
+--------------------------------------------------------------------- */
+.cake{
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 12px 0 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.cake__body{
+  width: 120px;
+  height: 60px;
+  background: linear-gradient(180deg, #FFE3D6, var(--peach));
+  border-radius: 14px;
+  box-shadow: inset 0 -8px 0 rgba(180,66,90,0.15);
+}
+.cake__top{
+  width: 130px;
+  height: 22px;
+  border-radius: 50% 50% 20px 20px / 60% 60% 20px 20px;
+  background: #FFFFFF;
+  border: 3px solid var(--peach);
+  margin-bottom: -12px;
+  z-index: 1;
+}
+.cake__candle{
+  width: 6px;
+  height: 26px;
+  background: var(--rose);
+  border-radius: 3px;
+  margin-bottom: -6px;
+  z-index: 2;
+}
+.cake__flame{
+  width: 10px;
+  height: 14px;
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  background: radial-gradient(circle at 50% 30%, #FFE9A8, #F6A94B 70%);
+  margin-bottom: -2px;
+  z-index: 3;
+  animation: flicker 1.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+.screen[id="screen-cake"].is-blown .cake__flame{ opacity: 0; }
+
+@keyframes flicker{
+  0%, 100%{ transform: scale(1) rotate(-1deg); }
+  50%{ transform: scale(1.08) rotate(2deg); }
+}
+
+/* ---------------------------------------------------------------------
+   Wish cards
+--------------------------------------------------------------------- */
+.cards{
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  overflow-x: auto;
+  padding: 6px 2px 16px;
+  scroll-snap-type: x mandatory;
+}
+
+.card{
+  flex: 0 0 78%;
+  scroll-snap-align: center;
+  height: 190px;
+  perspective: 900px;
+  cursor: pointer;
+}
+.card__inner{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4,0.2,0.2,1);
+  transform-style: preserve-3d;
+}
+.card.is-flipped .card__inner{ transform: rotateY(180deg); }
+
+.card__face{
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+.card__face--front{
+  background: linear-gradient(160deg, var(--blush), #FFE3D6);
+  border: 1px solid rgba(180,66,90,0.12);
+}
+.card__face--back{
+  background: var(--surface);
+  border: 1px solid rgba(180,66,90,0.18);
+  transform: rotateY(180deg);
+}
+.card__index{
+  font-size: 12px;
+  color: var(--plum-muted);
+}
+.card__hint{
+  font-size: 12px;
+  color: var(--plum-muted);
+  align-self: flex-start;
+}
+.card__message{
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--plum-text);
+}
+
+.progress-track--wishes{ margin-top: 4px; }
+
+/* ---------------------------------------------------------------------
+   Music toggle
+--------------------------------------------------------------------- */
+.music-toggle{
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--surface);
+  color: var(--rose-deep);
+  font-size: 16px;
+  box-shadow: 0 8px 20px var(--lilac-shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.music-toggle:hover{ opacity: 1; }
+.music-toggle:active{ transform: scale(0.94); }
+.music-toggle__icon{ display: inline-block; }
+.music-toggle.is-playing .music-toggle__icon{ animation: bob 1s ease-in-out infinite; }
+
+@keyframes bob{
+  0%, 100%{ transform: translateY(0); }
+  50%{ transform: translateY(-2px); }
+}
+
+/* ---------------------------------------------------------------------
+   Confetti
+--------------------------------------------------------------------- */
+.confetti-layer{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+.confetti-piece{
+  position: absolute;
+  top: -20px;
+  width: 8px;
+  height: 14px;
+  opacity: 0.9;
+  animation: fall linear forwards;
+}
+@keyframes fall{
+  to{ transform: translateY(110vh) rotate(540deg); opacity: 0.4; }
+}
+
+/* ---------------------------------------------------------------------
+   Small screens
+--------------------------------------------------------------------- */
+@media (max-width: 380px){
+  .stage{ padding: 36px 22px; }
+  .display{ font-size: 27px; }
+}
